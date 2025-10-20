@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,7 +83,7 @@
             display: flex;
             align-items: center;
             padding: 20px;
-            background-color: var(--secondary-bg-color);
+            background-color: var->secondary-bg-color;
             margin-bottom: 15px;
         }
 
@@ -466,7 +465,7 @@
             font-size: 16px;
             line-height: 1.6;
             color: var(--text-color);
-            margin-bottom: 25px;
+            margin-bottom: 15px; /* Reduced margin */
         }
         .custom-alert-content button {
             background-color: var(--accent-color);
@@ -481,6 +480,26 @@
         }
         .custom-alert-content button:hover {
             background-color: #e0bb00;
+            transform: translateY(-2px);
+        }
+        .telegram-join-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            background-color: #0088cc !important; /* Telegram Blue */
+            color: white !important;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .telegram-join-btn:hover {
+            background-color: #0077b3 !important;
             transform: translateY(-2px);
         }
 
@@ -841,7 +860,7 @@
     <script>
         const JOIN_BONUS_AMOUNT = 50; 
         const AD_REWARD_AMOUNT = 35; 
-        const DAILY_AD_LIMIT = 20; // *** UPDATED TO 20 ADS AS REQUESTED ***
+        const DAILY_AD_LIMIT = 20; // *** 20 Ads Limit Set ***
 
         // Placeholder for the ad showing function from gigapub.tech SDK
         function showAdWithCallback(callback) {
@@ -980,11 +999,25 @@
         function showCustomRewardAlert(title, message, reward) {
             rewardAlertTitle.textContent = title;
             rewardAlertMessage.innerHTML = message.replace('{{reward}}', `<span style="color: var(--accent-color); font-weight: 700;">${reward.toFixed(2)} টাকা</span>`);
+            
+            // Create/update Telegram Join Button dynamically
+            const telegramChannelUrl = 'https://t.me/cash_rain_official_channel1';
+            const joinButtonHTML = `
+                <a href="${telegramChannelUrl}" target="_blank" class="telegram-join-btn">
+                    <i class="fab fa-telegram-plane"></i> টেলিগ্রাম চ্যানেল দেখুন
+                </a>
+            `;
+            // Append the button below the main message
+            document.querySelector('.custom-alert-content').insertAdjacentHTML('beforeend', joinButtonHTML);
+
             rewardAlert.style.display = 'flex';
             createConfetti();
         }
 
         closeRewardAlertBtn.addEventListener('click', function() {
+            // Remove the dynamically added Telegram button when closing
+            const joinBtn = document.querySelector('.telegram-join-btn');
+            if (joinBtn) joinBtn.remove();
             rewardAlert.style.display = 'none';
         });
 
@@ -1031,8 +1064,8 @@
                 localStorage.setItem('viewWinHistory', JSON.stringify(viewWinHistory));
 
                 showCustomRewardAlert(
-                    'অভিনন্দন!',
-                    `${featureName} দেখে আপনি {{reward}} পেয়েছেন!`,
+                    'অভিনন্দন! ✅',
+                    `আপনি ${AD_REWARD_AMOUNT} টাকা আয় করেছেন!`, // Changed title and message
                     reward
                 );
             });
