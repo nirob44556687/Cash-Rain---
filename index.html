@@ -1,0 +1,1180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Rain - টাকার বৃষ্টি</title> <!-- Updated Title -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-bg-color: #1a1a1a;
+            --secondary-bg-color: #2c2c2c;
+            --accent-color: #FFD700; /* Gold */
+            --text-color: #FFFFFF;
+            --light-text-color: #b0b0b0;
+            --card-bg-color: #2c2c2c;
+            --border-color: #444444;
+            --button-bg-color: #FFD700;
+            --button-text-color: #1a1a1a;
+            --withdraw-bg-color: #2c2c2c; /* Background for withdraw section */
+            --input-bg-color: #3a3a3a;
+            --input-border-color: #555;
+            --submit-button-color: #4A90E2; /* Blue for submit button */
+            --submit-button-text-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh; /* Ensures full screen height on mobile */
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden; /* Prevent horizontal scroll for party popper */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--primary-bg-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-top: 0; /* Adjusted for full screen */
+            margin-bottom: 0; /* Adjusted for full screen */
+            min-height: calc(100vh - 40px); /* Fit within padding */
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--secondary-bg-color);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        header .app-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-color);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--light-text-color);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .user-dashboard {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--secondary-bg-color);
+            margin-bottom: 15px;
+        }
+
+        .user-dashboard .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: var(--light-text-color);
+            margin-right: 15px;
+            overflow: hidden; /* For image */
+        }
+        .user-dashboard .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--light-text-color);
+        }
+
+        .balance {
+            margin-left: auto;
+            background-color: var(--accent-color);
+            color: var(--button-text-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .main-content {
+            padding: 0px 20px 20px 20px;
+            flex-grow: 1; /* Allows content to take available space */
+            overflow-y: auto; /* Enable scrolling for long content */
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg-color);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background-color: #3a3a3a;
+        }
+
+        .feature-card .icon {
+            font-size: 40px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .friends-section {
+            background-color: var(--card-bg-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .friends-section h2 {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .referral-link-container {
+            background-color: #3a3a3a;
+            border-radius: 10px;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .referral-link {
+            flex-grow: 1;
+            font-size: 14px;
+            color: var(--text-color);
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin-right: 10px;
+        }
+
+        .copy-btn {
+            background-color: var(--accent-color);
+            color: var(--button-text-color);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #e0bb00;
+        }
+
+        .referral-count {
+            font-size: 14px;
+            color: var(--light-text-color);
+            text-align: center;
+        }
+
+        .referral-count span {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .referral-commission-info {
+            font-size: 13px;
+            color: var(--light-text-color);
+            text-align: center;
+            margin-top: 10px;
+        }
+        .referral-commission-info span {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+
+        footer {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            background-color: var(--secondary-bg-color);
+            border-top: 1px solid var(--border-color);
+            border-radius: 0 0 20px 20px;
+            margin-top: auto; /* Pushes footer to the bottom */
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--light-text-color);
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .nav-item.active {
+            color: var(--button-text-color);
+            background-color: var(--accent-color);
+        }
+
+        .nav-item.active .nav-icon {
+            color: var(--button-text-color);
+        }
+        .nav-item .nav-icon {
+            font-size: 22px;
+            margin-bottom: 3px;
+            color: var(--light-text-color);
+            transition: color 0.2s ease;
+        }
+        .nav-item.active .nav-text {
+            color: var(--button-text-color);
+        }
+        .nav-item .nav-text {
+            color: var(--light-text-color);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        /* Withdraw Content Styles */
+        .withdraw-content {
+            background-color: var(--primary-bg-color);
+            padding: 0;
+        }
+        .withdraw-header {
+            background-color: var(--secondary-bg-color);
+            color: var(--text-color);
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .withdraw-body {
+            padding: 20px;
+            background-color: var(--primary-bg-color);
+        }
+        .withdraw-card {
+            background-color: var(--secondary-bg-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        .withdraw-card h3 {
+            color: var(--accent-color);
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .withdraw-info p {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--light-text-color);
+        }
+        .withdraw-info p span {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        .withdraw-info p i {
+            color: var(--accent-color);
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--light-text-color);
+            margin-bottom: 8px;
+        }
+        .form-group select,
+        .form-group input {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border-radius: 10px;
+            border: 1px solid var(--input-border-color);
+            background-color: var(--input-bg-color);
+            color: var(--text-color);
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .form-group input::placeholder {
+            color: var(--light-text-color);
+        }
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #4A90E2, #7B68EE); /* Blue gradient */
+            color: var(--submit-button-text-color);
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #3A7BBF, #6A5ACD);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .submit-btn i {
+            font-size: 18px;
+        }
+
+        /* Party Poppers Styles */
+        .party-popper-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffd700; /* Gold */
+            opacity: 0;
+            animation: confetti-fall 2s forwards ease-out;
+            border-radius: 2px;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translate(-50%, -50%) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) rotate(var(--deg)); opacity: 0; }
+        }
+
+        /* Custom Alert Modal (for rewards) */
+        .custom-alert {
+            display: none;
+            position: fixed;
+            z-index: 1001; /* Above party poppers */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .custom-alert-content {
+            background-color: var(--secondary-bg-color); /* Changed to secondary-bg-color */
+            margin: auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 300px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+            transform: scale(0.8);
+            animation: pop-in 0.3s forwards ease-out;
+            border: 2px solid var(--accent-color);
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .custom-alert-content h2 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .custom-alert-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin-bottom: 25px;
+        }
+        .custom-alert-content button {
+            background-color: var(--accent-color);
+            color: var(--button-text-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .custom-alert-content button:hover {
+            background-color: #e0bb00;
+            transform: translateY(-2px);
+        }
+
+        /* Welcome Modal Styles */
+        #welcomeModal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1002; /* Higher than reward alert */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.85); /* Darker backdrop */
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .welcome-modal-content {
+            background-color: var(--primary-bg-color); /* Primary BG for welcome */
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 25px;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            text-align: center;
+            color: var(--text-color);
+            transform: scale(0.8);
+            animation: pop-in 0.3s forwards ease-out;
+        }
+
+        .welcome-modal-content .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .welcome-modal-content .modal-header i {
+            font-size: 28px;
+        }
+
+        .welcome-modal-content h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+        .welcome-modal-content .message-list {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--light-text-color);
+        }
+        .welcome-modal-content .message-list p {
+            margin: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            line-height: 1.4;
+        }
+        .welcome-modal-content .message-list p i {
+            color: var(--accent-color);
+            margin-right: 10px;
+            font-size: 16px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+        .welcome-modal-content .message-list .highlight {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        .welcome-modal-content .message-list .warning {
+            color: #FF6347; /* Tomato Red */
+            font-weight: 600;
+        }
+
+        /* Style for the Telegram channel link */
+        .welcome-modal-content .telegram-channel-link {
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: var(--accent-color); /* Gold color for the link */
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.2s ease;
+        }
+
+        .welcome-modal-content .telegram-channel-link:hover {
+            color: #e0bb00; /* Slightly darker gold on hover */
+        }
+
+        .welcome-modal-content .ok-button {
+            background: linear-gradient(45deg, #4A90E2, #7B68EE); /* Blue gradient from submit-btn */
+            color: var(--submit-button-text-color);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            margin-top: 15px;
+        }
+        .welcome-modal-content .ok-button:hover {
+            background: linear-gradient(45deg, #3A7BBF, #6A5ACD);
+            transform: translateY(-2px);
+        }
+
+        /* Styles for the new EARN ADS card content */
+        .earn-ads-section {
+            background-color: var(--card-bg-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .earn-ads-section h2 {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .earn-ads-section p {
+            font-size: 14px;
+            color: var(--light-text-color);
+            margin-bottom: 15px;
+        }
+
+        .earn-ads-section .reward-display {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .earn-ads-section .reward-display i {
+            font-size: 28px;
+        }
+
+        .earn-ads-section .ad-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500); /* Gold to Orange Gradient */
+            color: var(--button-text-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .earn-ads-section .ad-button:hover {
+            background: linear-gradient(45deg, #e0bb00, #e09500);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .earn-ads-section .ad-button i {
+            font-size: 18px;
+        }
+
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Ad Script from gigapub.tech -->
+    <script src="https://ad.gigapub.tech/script?id=1013"></script>
+    <!-- Ad Script from libtl.com -->
+    <script src="//libtl.com/sdk.js" data-zone="9461429" data-sdk="show_9461429"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="icon-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+            <span class="app-name">Cash Rain - 💸টাকার বৃষ্টি💸</span> <!-- Updated App Name -->
+            <button class="icon-btn" id="searchBtn"><i class="fas fa-search"></i></button>
+        </header>
+
+        <div class="user-dashboard">
+            <div class="profile-pic" id="userProfilePicContainer">
+                <!-- User profile photo or default icon will go here -->
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <h3>Hi, <span style="color: var(--accent-color);" id="userNameDisplay">⭐ Liyon</span></h3>
+                <p>Welcome Back!</p>
+            </div>
+            <div class="balance">
+                ৳<span id="userBalance">0.00</span>
+            </div>
+        </div>
+
+        <!-- Home Content -->
+        <div class="main-content" id="homeContent">
+            <div class="features-grid">
+                <div class="feature-card" id="spinnerCard">
+                    <div class="icon"><i class="fas fa-spinner fa-spin"></i></div>
+                    <p>Spinner</p>
+                </div>
+                <div class="feature-card" id="watchEarnCard">
+                    <div class="icon"><i class="fas fa-film"></i></div>
+                    <p>Watch & Earn</p>
+                </div>
+                <div class="feature-card" id="viewWinHistoryCard">
+                    <div class="icon"><i class="fas fa-history"></i></div>
+                    <p>Win History</p>
+                </div>
+                <div class="feature-card" id="dailyRewardCard">
+                    <div class="icon"><i class="fas fa-gift"></i></div>
+                    <p>Daily Reward</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friends Content -->
+        <div class="main-content" id="friendsContent" style="display: none;">
+            <div class="friends-section">
+                <h2>👥 ইনভাইট করো বন্ধুদের!</h2>
+                <div class="referral-link-container">
+                    <span class="referral-link" id="userReferralLink">http://t.me/cashrainv1bot</span>
+                    <button class="copy-btn" id="copyReferralLink">Copy</button>
+                </div>
+                <p class="referral-count">আপনার রেফারেল: <span id="referralCount">0</span> জন</p>
+                <p class="referral-commission-info">প্রতি রেফারেলে <span>৬০ টাকা</span> কমিশন!</p>
+            </div>
+        </div>
+
+        <!-- EARN ADS Content - Updated Structure -->
+        <div class="main-content" id="earnAdsContent" style="display: none;">
+            <div class="earn-ads-section">
+                <h2>বিজ্ঞাপন দেখুন</h2>
+                <p>প্রতিটি বিজ্ঞাপন দেখে <span style="color: var(--accent-color); font-weight: 600;">35.00 টাকা</span> আয় করুন</p>
+                <div class="reward-display">
+                    <i class="fas fa-sack-dollar"></i> রিওয়ার্ড: <span>35.00 টাকা</span>
+                </div>
+                <button class="ad-button" id="initiateEarnAds">
+                    <i class="fas fa-play-circle"></i> বিজ্ঞাপন দেখুন
+                </button>
+            </div>
+            <p style="text-align: center; color: var(--light-text-color); margin-top: 20px;">এখানে আরও ইনকামের সুযোগ আসবে!</p>
+        </div>
+
+        <!-- Withdraw Content -->
+        <div class="main-content withdraw-content" id="withdrawContent" style="display: none;">
+            <div class="withdraw-header">
+                <i class="fas fa-wallet"></i> টাকা উত্তোলন
+            </div>
+            <div class="withdraw-body">
+                <div class="withdraw-card">
+                    <h3><i class="fas fa-info-circle"></i> উত্তোলনের তথ্য</h3>
+                    <div class="withdraw-info">
+                        <p><i class="fas fa-money-bill-wave"></i> ন্যূনতম উত্তোলনযোগ্য Amount: <span>1000.00 টাকা</span></p>
+                        <p><i class="fas fa-users"></i> ন্যূনতম রেফারেল প্রয়োজন: <span>20 জন</span></p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentMethod"><i class="fas fa-credit-card"></i> পদ্ধতি নির্বাচন করুন</label>
+                    <select id="paymentMethod">
+                        <option value="">একটি পদ্ধতি নির্বাচন করুন</option>
+                        <option value="bkash">Bkash</option>
+                        <option value="nagad">Nagad</option>
+                        <option value="rocket">Rocket</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="accountNumber"><i class="fas fa-user-circle"></i> একাউন্ট নম্বর</label>
+                    <input type="text" id="accountNumber" placeholder="01XXXXXXXXXX">
+                </div>
+
+                <div class="form-group">
+                    <label for="withdrawAmount"><i class="fas fa-coins"></i> Amount (টাকা)</label>
+                    <input type="number" id="withdrawAmount" placeholder="ন্যূনতম 1000.00 টাকা">
+                </div>
+
+                <button class="submit-btn" id="submitWithdrawRequest">
+                    <i class="fas fa-paper-plane"></i> রিকোয়েস্ট জমা দিন
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            <div class="nav-item active" id="homeNav">
+                <i class="fas fa-home nav-icon"></i>
+                <span class="nav-text">Home</span>
+            </div>
+            <div class="nav-item" id="friendsNav">
+                <i class="fas fa-users nav-icon"></i>
+                <span class="nav-text">Friends</span>
+            </div>
+            <div class="nav-item" id="earningNav">
+                <i class="fas fa-money-bill-wave nav-icon"></i>
+                <span class="nav-text">EARN ADS</span>
+            </div>
+            <div class="nav-item" id="withdrawNav">
+                <i class="fas fa-wallet nav-icon"></i>
+                <span class="nav-text">Withdraw</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Party Poppers Container -->
+    <div class="party-popper-container" id="partyPopperContainer"></div>
+
+    <!-- Custom Alert for Reward -->
+    <div id="rewardAlert" class="custom-alert">
+        <div class="custom-alert-content">
+            <h2 id="rewardAlertTitle">🎉 অভিনন্দন! 🎉</h2>
+            <p id="rewardAlertMessage">আপনি {{reward}} বোনাস পেয়েছেন!</p>
+            <button id="closeRewardAlert">বুঝেছি</button>
+        </div>
+    </div>
+
+    <!-- Welcome Modal -->
+    <div id="welcomeModal" class="custom-alert">
+        <div class="welcome-modal-content">
+            <div class="modal-header">
+                <i class="fas fa-bell"></i> নোটিস
+            </div>
+            <h3>স্বাগতম! 🔥</h3>
+            <div class="message-list">
+                <p>আসসালামু আলাইকুম, সততার সাথে পেমেন্ট করছি। নিয়ম মেনে কাজ করলে ১০০% পেমেন্ট পাবেন ইনশাআল্লাহ 🔥</p>
+                <p><i class="fas fa-bolt"></i> জয়েন বোনাস: <span class="highlight">৫০ টাকা</span></p>
+                <p><i class="fas fa-money-bill-wave"></i> প্রতি রেফারে: <span class="highlight">৬০ টাকা</span></p>
+                <p><i class="fas fa-coins"></i> প্রতি বিজ্ঞাপনে: <span class="highlight">35 টাকা</span></p>
+                <p><i class="fas fa-heart"></i> প্রতিদিন <span class="highlight">১০ টা</span> করে বিজ্ঞাপন দেখার সুযোগ</p>
+                <p><i class="fas fa-fire"></i> এই সাইটে কোন ইনভেস্ট করতে হবে না সম্পূর্ণ ফ্রিতে ইনকাম করতে পারবেন।</p>
+                <p>ধন্যবাদ!</p>
+                <p><i class="fas fa-check-circle"></i> ১০০% পেমেন্ট গ্যারান্টি</p>
+                <p><i class="fas fa-wallet"></i> বিকাশ, নগদ</p>
+                <p><i class="fas fa-exclamation-triangle warning"></i> কাজ করার সময় কোনো ধরনের VPN ব্যবহার করবেন না। নিয়ম মেনে কাজ করুন।</p>
+                <p><i class="fas fa-users-rays"></i> যেকোনো আপডেট বা সমস্যার সমাধানের জন্য অফিসিয়াল চ্যানেলে জয়েন থাকুন ✅</p>
+                <!-- Telegram Channel Link Added Here -->
+                <a href="https://t.me/cash_rain_official_channel1" target="_blank" class="telegram-channel-link">
+                    <i class="fab fa-telegram-plane"></i> আমাদের অফিসিয়াল টেলিগ্রাম চ্যানেল
+                </a>
+            </div>
+            <button id="closeWelcomeModal" class="ok-button">বুঝেছি</button>
+        </div>
+    </div>
+
+    <script>
+        const JOIN_BONUS_AMOUNT = 50; 
+        const AD_REWARD_AMOUNT = 35; 
+        const DAILY_AD_LIMIT = 20; // *** UPDATED TO 20 ADS AS REQUESTED ***
+
+        // Placeholder for the ad showing function from gigapub.tech SDK
+        function showAdWithCallback(callback) {
+            console.log("Attempting to show ad...");
+            
+            // 1. Try gigapub.tech SDK (ID: 1013)
+            if (typeof window.gigapub_show_ad === 'function') { 
+                console.log("Showing ad via gigapub.tech SDK...");
+                window.gigapub_show_ad();
+                setTimeout(callback, 500); // Simulate a slight delay for ad completion
+            } 
+            // 2. Fallback to libtl.com SDK (Zone: 9461429)
+            else if (typeof window.show_9461429 === 'function') {
+                console.log("Falling back to libtl.com SDK...");
+                window.show_9461429();
+                setTimeout(callback, 500);
+            } 
+            // 3. Fallback for demo if no SDK function found
+            else {
+                console.warn("No recognized ad SDK function found. Calling callback immediately for demo.");
+                callback(); // Call the callback immediately if no SDK is available
+            }
+        }
+
+        // --- INITIALIZATION AND BALANCE SETUP ---
+        let userBalance = parseFloat(localStorage.getItem('userBalance'));
+        let isNewUser = localStorage.getItem('isNewUser') === null; // Check if 'isNewUser' key exists
+
+        // *** Set balance to 0.00 if it's a new user or storage is empty ***
+        if (isNaN(userBalance) || isNewUser) {
+            userBalance = 0.00; // *** Set to 0.00 as requested ***
+            localStorage.setItem('isNewUser', 'false'); 
+        }
+        localStorage.setItem('userBalance', userBalance);
+
+        let viewWinHistory = JSON.parse(localStorage.getItem('viewWinHistory')) || [];
+
+        // Ad counter for daily limit
+        let today = new Date().toDateString();
+        let adViewsToday = JSON.parse(localStorage.getItem('adViewsToday')) || { date: '', count: 0 };
+
+        if (adViewsToday.date !== today) {
+            adViewsToday = { date: today, count: 0 };
+            localStorage.setItem('adViewsToday', JSON.stringify(adViewsToday));
+        }
+
+
+        function updateBalanceDisplay() {
+            document.getElementById('userBalance').textContent = userBalance.toFixed(2);
+        }
+
+        // --- TELEGRAM INTEGRATION (For displaying name/photo) ---
+        let telegramUser = null;
+        try {
+            if (window.Telegram && window.Telegram.WebApp) {
+                telegramUser = window.Telegram.WebApp.initDataUnsafe?.user;
+                console.log("Telegram User Data:", telegramUser);
+            }
+        } catch (e) {
+            console.warn("Telegram WebApp API not available:", e);
+        }
+
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const userProfilePicContainer = document.getElementById('userProfilePicContainer');
+
+        if (telegramUser) {
+            // Display Telegram name
+            userNameDisplay.innerHTML = `⭐ ${telegramUser.first_name || ''}`;
+            if (telegramUser.last_name) {
+                userNameDisplay.innerHTML += ` <span style="color: var(--accent-color);">${telegramUser.last_name}</span>`;
+            } else {
+                 // If only first name is present, add a space to keep color consistent
+                 userNameDisplay.innerHTML += ` <span style="color: var(--accent-color);"></span>`;
+            }
+
+            // Display Telegram Photo
+            const userPhotoUrl = telegramUser.photo_url;
+            if (userPhotoUrl) {
+                userProfilePicContainer.innerHTML = `<img src="${userPhotoUrl}" alt="User Profile">`;
+            } else {
+                userProfilePicContainer.innerHTML = '<i class="fas fa-user"></i>';
+            }
+        } else {
+            // Default name if Telegram WebApp is not detected
+            userNameDisplay.innerHTML = `⭐ Liyon`;
+            userProfilePicContainer.innerHTML = '<i class="fas fa-user"></i>';
+        }
+
+        updateBalanceDisplay();
+
+        function showContent(contentId) {
+            document.querySelectorAll('.main-content').forEach(div => {
+                div.style.display = 'none';
+            });
+            document.getElementById(contentId).style.display = 'block';
+
+            // Also update active state of footer navigation
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            if (contentId === 'homeContent') {
+                document.getElementById('homeNav').classList.add('active');
+            } else if (contentId === 'friendsContent') {
+                document.getElementById('friendsNav').classList.add('active');
+            } else if (contentId === 'earnAdsContent') {
+                document.getElementById('earningNav').classList.add('active');
+            } else if (contentId === 'withdrawContent') {
+                document.getElementById('withdrawNav').classList.add('active');
+            }
+        }
+
+        showContent('homeContent'); // Default to home content
+
+        function createConfetti() {
+            const container = document.getElementById('partyPopperContainer');
+            container.innerHTML = ''; // Clear previous confetti
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                confetti.style.setProperty('--x', `${(Math.random() - 0.5) * 500}px`);
+                confetti.style.setProperty('--y', `${(Math.random() - 0.5) * 500}px`);
+                confetti.style.setProperty('--deg', `${Math.random() * 720}deg`);
+                container.appendChild(confetti);
+            }
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 2000);
+        }
+
+        const rewardAlert = document.getElementById('rewardAlert');
+        const rewardAlertTitle = document.getElementById('rewardAlertTitle');
+        const rewardAlertMessage = document.getElementById('rewardAlertMessage');
+        const closeRewardAlertBtn = document.getElementById('closeRewardAlert');
+
+        function showCustomRewardAlert(title, message, reward) {
+            rewardAlertTitle.textContent = title;
+            rewardAlertMessage.innerHTML = message.replace('{{reward}}', `<span style="color: var(--accent-color); font-weight: 700;">${reward.toFixed(2)} টাকা</span>`);
+            rewardAlert.style.display = 'flex';
+            createConfetti();
+        }
+
+        closeRewardAlertBtn.addEventListener('click', function() {
+            rewardAlert.style.display = 'none';
+        });
+
+        // --- Welcome Modal Logic ---
+        const welcomeModal = document.getElementById('welcomeModal');
+        const closeWelcomeModalBtn = document.getElementById('closeWelcomeModal');
+
+        function showWelcomeModal() {
+            const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+            if (hasSeenWelcome === 'false' || hasSeenWelcome === null) { 
+                welcomeModal.style.display = 'flex';
+            }
+        }
+
+        closeWelcomeModalBtn.addEventListener('click', function() {
+            welcomeModal.style.display = 'none';
+            localStorage.setItem('hasSeenWelcome', 'true'); // Mark as seen
+        });
+
+        // --- Common Ad View Logic ---
+        function handleAdReward(featureName) {
+            if (adViewsToday.count >= DAILY_AD_LIMIT) {
+                alert(`আজকের জন্য আপনার ${DAILY_AD_LIMIT} টি বিজ্ঞাপন দেখার লিমিট শেষ! আগামীকাল আবার চেষ্টা করুন।`);
+                return;
+            }
+
+            showAdWithCallback(function() {
+                let reward = AD_REWARD_AMOUNT;
+                
+                userBalance += reward;
+                localStorage.setItem('userBalance', userBalance);
+                updateBalanceDisplay();
+
+                adViewsToday.count++;
+                localStorage.setItem('adViewsToday', JSON.stringify(adViewsToday));
+
+                const winTime = new Date().toLocaleString();
+                const winEntry = {
+                    amount: reward,
+                    time: winTime,
+                    feature: featureName
+                };
+                viewWinHistory.push(winEntry);
+                localStorage.setItem('viewWinHistory', JSON.stringify(viewWinHistory));
+
+                showCustomRewardAlert(
+                    'অভিনন্দন!',
+                    `${featureName} দেখে আপনি {{reward}} পেয়েছেন!`,
+                    reward
+                );
+            });
+        }
+
+        // --- Spinner (now redirects to EARN ADS) ---
+        document.getElementById('spinnerCard').addEventListener('click', function() {
+            showContent('earnAdsContent');
+        });
+
+        // --- Watch & Earn (now redirects to EARN ADS) ---
+        document.getElementById('watchEarnCard').addEventListener('click', function() {
+            showContent('earnAdsContent');
+        });
+
+        // --- Win History ---
+        document.getElementById('viewWinHistoryCard').addEventListener('click', function() {
+            if (viewWinHistory.length === 0) {
+                alert('আপনার কোনো ইনকাম হিস্টোরি নেই। কাজ করে ইনকাম করুন!');
+                return;
+            }
+
+            let historyText = "আপনার ইনকাম হিস্টোরি:\n\n";
+            viewWinHistory.forEach((entry, index) => {
+                historyText += `${index + 1}. ${entry.amount.toFixed(2)} টাকা (${entry.feature || 'Unknown'}) - ${entry.time}\n`;
+            });
+            alert(historyText);
+        });
+
+        // --- Daily Reward Logic ---
+        document.getElementById('dailyRewardCard').addEventListener('click', function() {
+            const today = new Date().toDateString();
+            let lastRewardDate = localStorage.getItem('lastRewardDate');
+
+            if (lastRewardDate === today) {
+                alert('আপনি আজকের ডেইলি রিওয়ার্ড নিয়ে নিয়েছেন! আগামীকাল আবার চেষ্টা করুন।');
+                return;
+            }
+            
+            showContent('earnAdsContent');
+            alert('আপনার ডেইলি রিওয়ার্ড ক্লেইম করতে "বিজ্ঞাপন দেখুন ও ইনকাম করুন" বাটনে ক্লিক করুন।');
+            localStorage.setItem('pendingDailyReward', 'true'); // Flag the next ad click as a daily reward claim
+        });
+
+        // --- EARN ADS Card Click (now the button to initiate ad view) ---
+        document.getElementById('initiateEarnAds').addEventListener('click', function() {
+            const isDailyRewardAttempt = localStorage.getItem('pendingDailyReward') === 'true';
+            const featureName = isDailyRewardAttempt ? 'ডেইলি রিওয়ার্ড' : 'EARN ADS';
+
+            handleAdReward(featureName);
+            
+            if (isDailyRewardAttempt) {
+                localStorage.removeItem('pendingDailyReward'); // Clear the flag after processing
+                localStorage.setItem('lastRewardDate', new Date().toDateString()); // Mark daily reward as claimed
+            }
+        });
+
+
+        // Navigation Items
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+
+                const navId = this.id;
+                if (navId === 'homeNav') {
+                    showContent('homeContent');
+                } else if (navId === 'friendsNav') {
+                    showContent('friendsContent');
+                } else if (navId === 'earningNav') {
+                    showContent('earnAdsContent');
+                } else if (navId === 'withdrawNav') {
+                    showContent('withdrawContent');
+                }
+            });
+        });
+
+        document.getElementById('menuBtn').addEventListener('click', function() {
+            alert('মেনু খোলা হচ্ছে!');
+        });
+
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            alert('সার্চ ফাংশন খোলা হচ্ছে!');
+        });
+
+        document.getElementById('copyReferralLink').addEventListener('click', function() {
+            const referralLink = document.getElementById('userReferralLink').textContent;
+            navigator.clipboard.writeText(referralLink).then(() => {
+                alert('রেফারেল লিংক কপি করা হয়েছে!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('রেফারেল লিংক কপি করা যায়নি।');
+            });
+        });
+
+        document.getElementById('submitWithdrawRequest').addEventListener('click', function() {
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+            const minWithdraw = 1000;
+            const minReferrals = 20;
+
+            const currentReferrals = parseInt(document.getElementById('referralCount').textContent); 
+
+            if (!paymentMethod) {
+                alert('উইথড্র করার পদ্ধতি নির্বাচন করুন।');
+                return;
+            }
+            if (!accountNumber || accountNumber.length < 10) {
+                alert('সঠিক একাউন্ট নম্বর দিন।');
+                return;
+            }
+            if (isNaN(withdrawAmount) || withdrawAmount < minWithdraw) {
+                alert(`ন্যূনতম ${minWithdraw} টাকা উত্তোলন করতে পারবেন।`);
+                return;
+            }
+            if (userBalance < withdrawAmount) {
+                alert('আপনার ব্যালেন্সে যথেষ্ট টাকা নেই।');
+                return;
+            }
+            if (currentReferrals < minReferrals) {
+                alert(`উইথড্র করার জন্য আপনার ${minReferrals} জন রেফারেল প্রয়োজন। আপনার বর্তমান রেফারেল: ${currentReferrals} জন।`);
+                return;
+            }
+
+            userBalance -= withdrawAmount;
+            localStorage.setItem('userBalance', userBalance);
+            updateBalanceDisplay();
+
+            alert(`আপনার ${withdrawAmount.toFixed(2)} টাকা ${paymentMethod} অ্যাকাউন্টে (${accountNumber}) উইথড্র করার রিকোয়েস্ট জমা দেওয়া হয়েছে। ২৪ ঘন্টার মধ্যে সম্পন্ন হবে।`);
+
+            document.getElementById('paymentMethod').value = '';
+            document.getElementById('accountNumber').value = '';
+            document.getElementById('withdrawAmount').value = '';
+        });
+
+        // Initialize and show welcome modal on page load
+        window.addEventListener('load', () => {
+            showWelcomeModal();
+        });
+    </script>
+</body>
+</html>
