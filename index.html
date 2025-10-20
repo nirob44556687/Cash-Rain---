@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,7 +84,7 @@
             display: flex;
             align-items: center;
             padding: 20px;
-            background-color: var->secondary-bg-color;
+            background-color: var(--secondary-bg-color);
             margin-bottom: 15px;
         }
 
@@ -734,9 +735,11 @@
             <div class="friends-section">
                 <h2>👥 ইনভাইট করো বন্ধুদের!</h2>
                 <div class="referral-link-container">
-                    <span class="referral-link" id="userReferralLink">http://t.me/cashrainv1bot</span>
+                    <!-- *** REFERRAL LINK UPDATED TO STANDARD TELEGRAM FORMAT WITH PLACEHOLDER *** -->
+                    <span class="referral-link" id="userReferralLink">http://t.me/cashrainv1bot?start=REF_ID_HERE</span>
                     <button class="copy-btn" id="copyReferralLink">Copy</button>
                 </div>
+                <!-- *** Referral Count set to 0 by default as server data is unavailable *** -->
                 <p class="referral-count">আপনার রেফারেল: <span id="referralCount">0</span> জন</p>
                 <p class="referral-commission-info">প্রতি রেফারেলে <span>৬০ টাকা</span> কমিশন!</p>
             </div>
@@ -928,6 +931,7 @@
 
         if (telegramUser) {
             // Display Telegram name
+            // *** FIX APPLIED: Use actual Telegram name instead of hardcoded "Liyon" ***
             userNameDisplay.innerHTML = `⭐ ${telegramUser.first_name || ''}`;
             if (telegramUser.last_name) {
                 userNameDisplay.innerHTML += ` <span style="color: var(--accent-color);">${telegramUser.last_name}</span>`;
@@ -1065,7 +1069,7 @@
 
                 showCustomRewardAlert(
                     'অভিনন্দন! ✅',
-                    `আপনি ${AD_REWARD_AMOUNT} টাকা আয় করেছেন!`, // Changed title and message
+                    `আপনি ${AD_REWARD_AMOUNT} টাকা আয় করেছেন!`, // Changed title and message to reflect 35 Taka earning
                     reward
                 );
             });
